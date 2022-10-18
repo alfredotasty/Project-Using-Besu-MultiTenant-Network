@@ -1,6 +1,5 @@
 # Project-Using-Besu-MultiTenant-Network
-Using private network blockchian to send private transaction in you tenant by
-register and choose the private tenant group
+this project about for using private network blockchian to send private transaction in you tenant by register and choose the private tenant group
 
 - Back-end Using Express.js/node.js 💻 🛠
 - Smart-contract using solidity/truffle 🫱🏻‍🫲🏼 🍄
