@@ -5,6 +5,7 @@ this project about for using private network blockchian to send private transact
 - Smart-contract using solidity/truffle 🫱🏻‍🫲🏼 🍄
 - Front-end Using React.js 🖥 🌄
 - Ethereum-Cliend Using Hyperledger Besu 📦 💵
+- Local Database Using Json-server 📄
 - Database Using mongoDB 🥭 💾
 
 ## Blockchain Network 
@@ -24,4 +25,8 @@ npm run dev
 - Front-end
 ```sh
 npm start
+```
+- Local Database
+```sh
+npx json-server --watch localDB/db.json --port 8000
 ```
