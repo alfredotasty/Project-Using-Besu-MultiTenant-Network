@@ -21,13 +21,13 @@ const useFetch = (url) => {
                 if(err.name === 'AbortError'){
                     console.log('fetch aborted')
                 }
-
             })
 
         },500)
 
         return () => {
             aborCont.abort()
+            console.log('clean up fetch!!')
         }
         
     }, [url]);

@@ -1,8 +1,18 @@
-const SmartContractFrom = () => {
+import { useEffect, useState } from "react";
+
+const SmartContractFrom = (data) => {
+    const [addr,setAddr] = useState(null)
+    useEffect(() => {
+        setAddr(data)
+    })
+    console.log("samrt contract form",data)
+    console.log("addr", addr)
+    
     return ( 
         <div className='square'>
         <form className='smartcontract'>
-            <h1>Smart Contract Feid</h1>
+            <h1>Smart Contract Field</h1>
+            {addr && <p>Address is {addr.message} </p>}
             <label>Name</label>
             <input
                 type="text"

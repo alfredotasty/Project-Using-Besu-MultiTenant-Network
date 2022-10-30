@@ -5,27 +5,32 @@ import axios from 'axios';
 import useFetch from "./useFetch";
 import SmartContractFrom from "./SmartContracFrom";
 import Information from "./Information";
-
+import Swal from 'sweetalert2'
 
 const UserContract = () => {
+    const [contract, setContract] = useState(null)
     const {id} = useParams()
     const {data: user, isLoading} = useFetch('http://localhost:8000/users/' + id);
 
 
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    
-    //   };
-    // const handleRequest = () => {
-    //     alert("Request Sending")
-    //     axios
-    //       .post('http://localhost:8080/users/signup', user)
-    //       .then(() => console.log('Send Request Success!',user))
-    //       .catch(err => {
-    //         console.error(err);
-    //       });
-    //   };
+    const handleSubmit = (e) => {
+        e.preventDefault();
+      };
 
+    
+    const handleRequest = async () => {
+    
+        const{data: respond} = await axios.post('http://localhost:8080/users/signup', user)
+        console.log("raw res",respond)
+        // const etherScan = "https://etherscan.io/address/" + respond.message.toString()
+        Swal.fire(   
+            'smart contract deploy!!',
+            respond.message,
+        )
+    
+        return(setContract(respond))
+    }
+      
     return (
         <div className='information'>
             <div className="square">
@@ -40,13 +45,13 @@ const UserContract = () => {
                 <p>GroupID : {user.privacyGroupId}</p>
                 <p>Node : {user.node}</p>
                 <p>Group : {user.tenant}</p>
-                {/* <button className="buttonRequest" type="button" onSubmit={handleSubmit} onClick={handleRequest} >send request</button> */}
+                <button className="buttonRequest" type="button" onSubmit={handleSubmit} onClick={handleRequest} >send request</button>
 
                 </article>
             )}
                 </div>
             </div>
-            <SmartContractFrom/>
+            {contract && <SmartContractFrom data={contract}/>}
             <Information/>
            
         </div>

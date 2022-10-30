@@ -4,11 +4,12 @@ const app = express();
 const userRouter = require("./routes/userRoutes");
 const mongodb = require("mongoose");
 const cors = require('cors')
+const contracAddr = require("./controllers/userController")
 
 app.use(cors())
 app.use(express.json());
 
-app.use("/users", userRouter);
+app.use("/users", userRouter)
 
 app.get("/",(req, res) => {
     res.send("Hello");

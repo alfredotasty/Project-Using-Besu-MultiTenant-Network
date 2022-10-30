@@ -1,4 +1,3 @@
-
 const dotenv =require('dotenv')
 dotenv.config({ path: '../.env' }) // warning when don't forget path when in complex directory
 const userModel = require("../models/user")
@@ -12,57 +11,77 @@ const path = require('path');
 const signup = async (req, res) => {
     // recipt request
     const{username, node, privateKey, endpoint, privacyGroupId, token, enclave} = req.body;
-    res.status(200).json({message: username})
-    console.log("Recive! From Client")
-    console.log("username:",username)
-    console.log("enclave:",privacyGroupId)
-    console.log("endpoint:",endpoint)
-    console.log("Besu node:",node)
+    // console.log("Recive! From Client")
+    // console.log("username:",username)
+    // console.log("enclave:",privacyGroupId)
+    // console.log("endpoint:",endpoint)
+    // console.log("Besu node:",node)
+    // console.log("private key", privateKey)
+    const{createHttpProvider} = require('./helper')
+    // import binary file
+    const binary = fs.readFileSync(
+        path.join(__dirname, "../contract/information_bin.bin")
+      );
+    
+    const node1 = new Web3Quorum(
+        new Web3(createHttpProvider(token,endpoint))
+    )
+
+    // 
+    //
+
+    const createInformationContract = (privacyGroupId) => {
+      const contractOptions = {
+        data: `0x${binary}`,
+        privateFrom: "VazacdLe/IK9Lpq7K7WkNR5Lhf6gnl23ESovCES/9gY=",
+        privacyGroupId: privacyGroupId,
+        privateKey: privateKey,
+    }
+
+        return node1.priv.generateAndSendRawTransaction(contractOptions);
+    }
+    const getPrivateContractAddress = (transactionHash) => {
+        return node1.priv
+          .waitForTransactionReceipt(transactionHash)
+          .then((privateTransactionReceipt) => {
+            return privateTransactionReceipt.contractAddress;
+          });
+      };
+
+    const contractAddress = await createInformationContract(
+        privacyGroupId
+    ).then((res) => {
+        console.log("transaction hash",res)
+        return getPrivateContractAddress(res);
+        
+    });
+      console.log(
+        `now you have to run:\n export CONTRACT_ADDRESS=${contractAddress}`
+      )
+      console.log(
+        ` export PRIVACY_GROUP_ID=${privacyGroupId}`
+      )
+  
+      res.status(200).json({message: contractAddress})
+  
+
+    
+
+      module.exports = () => {
+        return createInformationContract()
+          .then(getPrivateContractAddress)
+          .catch((error) => {
+            console.log(error)
+          })
+        
+      }
+
+
+
+    if (require.main === module) {
+      module.exports();
+    } 
 }
-    // const{createHttpProvider} = require('./helper')
-    // // import binary file
-    // const binary = fs.readFileSync(
-    //     path.join(__dirname, "../contract/information_bin.bin")
-    //   );
-    
-    // const node1 = new Web3Quorum(
-    //     new Web3(createHttpProvider(token,endpoint))
-    // )
-
-    // const contractOptions = {
-    //     data: `0x${binary}`,
-    //     privateFrom: enclave,
-    //     privacyGroupId: privacyGroupId,
-    //     privateKey: privateKey,
-    // }
-    // const createInformationContract = (privacyGroupId) => {
-    //     contractOptions
-    //     return node1.priv.generateAndSendRawTransaction(contractOptions);
-    // }
-    // const getPrivateContractAddress = (transactionHash) => {
-    //     return node1.priv
-    //       .waitForTransactionReceipt(transactionHash)
-    //       .then((privateTransactionReceipt) => {
-    //         return privateTransactionReceipt.contractAddress;
-    //       });
-    //   };
-
-    // const contractAddress = await createInformationContract(
-    //     privacyGroupId
-    // ).then((res) => {
-    //     return getPrivateContractAddress(res);
-    // });
-    //   console.log(
-    //     `now you have to run:\n export CONTRACT_ADDRESS=${contractAddress}`
-    //   )
-    //   console.log(
-    //     ` export PRIVACY_GROUP_ID=${privacyGroupId}`
-    //   )
-    // }
-    
-    // if (require.main === module) {
-    //   module.exports();
-    // } 
 
 
 const signin = async (req, res) => {
