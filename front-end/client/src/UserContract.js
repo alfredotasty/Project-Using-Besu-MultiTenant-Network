@@ -27,8 +27,9 @@ const UserContract = () => {
             'smart contract deploy!!',
             respond.message,
         )
-    
-        return(setContract(respond))
+        setContract(respond)
+
+        return(contract)
     }
       
     return (
@@ -51,7 +52,7 @@ const UserContract = () => {
             )}
                 </div>
             </div>
-            {contract && <SmartContractFrom data={contract}/>}
+            {contract && <SmartContractFrom data={contract.message}/>}
             <Information/>
            
         </div>
