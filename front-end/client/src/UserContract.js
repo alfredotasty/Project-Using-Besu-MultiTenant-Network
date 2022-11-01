@@ -20,13 +20,17 @@ const UserContract = () => {
     
     const handleRequest = async () => {
     
-        const{data: respond} = await axios.post('http://localhost:8080/users/signup', user)
+        const{data: respond} = await axios.post('http://localhost:8081/users/signup', user)
         console.log("raw res",respond)
-        // const etherScan = "https://etherscan.io/address/" + respond.message.toString()
-        Swal.fire(   
-            'smart contract deploy!!',
-            respond.message,
-        )
+        
+        Swal.fire({
+ 
+            title: "smart contract deploy success!!",   
+            text: respond.message,       
+            confirmButtonColor: "#000000",   
+            confirmButtonText: "OK",   
+        })
+    
         setContract(respond)
 
         return(contract)
@@ -46,7 +50,10 @@ const UserContract = () => {
                 <p>GroupID : {user.privacyGroupId}</p>
                 <p>Node : {user.node}</p>
                 <p>Group : {user.tenant}</p>
-                <button className="buttonRequest" type="button" onSubmit={handleSubmit} onClick={handleRequest} >send request</button>
+                <div className="squareButton">
+                    <button className="buttonRequest" type="button" onSubmit={handleSubmit} onClick={handleRequest} >send request</button>
+                </div>
+                
 
                 </article>
             )}
