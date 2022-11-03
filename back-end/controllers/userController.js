@@ -9,7 +9,8 @@ const fs = require("fs")
 const path = require('path');
 
 const signup = async (req, res) => {
-    // recipt request
+  try{
+        // recipt request
     const{username, node, privateKey, endpoint, privacyGroupId, token, enclave} = req.body;
     // console.log("Recive! From Client")
     // console.log("username:",username)
@@ -35,7 +36,7 @@ const signup = async (req, res) => {
         data: `0x${binary}`,
         privateFrom: "VazacdLe/IK9Lpq7K7WkNR5Lhf6gnl23ESovCES/9gY=",
         privacyGroupId: privacyGroupId,
-        privateKey: privateKey,
+        privateKey: privateKey
     }
 
         return node1.priv.generateAndSendRawTransaction(contractOptions);
@@ -76,11 +77,15 @@ const signup = async (req, res) => {
         
       }
 
-
-
     if (require.main === module) {
       module.exports();
     } 
+
+
+  }catch (err) {
+    console.error(err.message)
+  }
+
 }
 
 

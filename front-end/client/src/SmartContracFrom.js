@@ -5,27 +5,36 @@ const SmartContractFrom = (data) => {
  
     console.log("samrt contract form",data)
     
- 
     const handleRequest = async () => {
     
-        const{data: respond} = await axios.post('http://localhost:8081/interact/storeValue', data)
-        console.log("raw res",respond)
-        
-        Swal.fire({
- 
-            title: "Interact Success!!",   
-            text: respond.message,     
-            confirmButtonColor: "#000000",   
-            confirmButtonText: "OK",   
+        const respond = await axios.post('http://localhost:8081/interact/storeValue', data)
+            .then( respond => {
+                console.log("res from interact",respond.data.message)
+                // console.log(data.data)
+                Swal.fire({
+                icon: 'success',
+                title: "Interact Success!!",   
+                text: respond.data.message,     
+                confirmButtonColor: "#000000",   
+                confirmButtonText: "OK",   
+                })
+         }).catch(err => {
+            if(err.name === 'AxiosError'){
+                // console.log('Unauthorize')
+                Swal.fire({
+                    icon: 'error',
+                    title: "Error",  
+                    text:"Pls check log",
+                    confirmButtonColor: "#000000",   
+                    confirmButtonText: "OK",   
+                    })
+            }
         })
-    
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
       };
-
-
 
     return ( 
         

@@ -24,7 +24,7 @@ const UserContract = () => {
         console.log("raw res",respond)
         
         Swal.fire({
- 
+            icon: 'success',
             title: "smart contract deploy success!!",   
             text: respond.message,       
             confirmButtonColor: "#000000",   
