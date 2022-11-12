@@ -1,0 +1,18 @@
+version: '3'
+services:
+  besu:
+    image: hyperledger/besu:latest
+    ports:
+      - '30304:30303'
+      - '8546:8545'
+    environment:
+      - BESU_RPC_HTTP_ENABLED=true
+    container_name: "node2"
+    volumes:
+      - .:/usr/app/
+    command: --config-file=/usr/app/option.toml
+    networks:
+      customnetwork:
+        ipv4_address: 172.21.0.11
+volumes:
+  .:

@@ -1,0 +1,25 @@
+version: "3"
+services:
+  node1:
+    extends:
+      file: "./blockchain/besu/node1/docker-compose.yaml"
+      service: besu
+  node2:
+    extends:
+      file: "./blockchain/besu/node2/docker-compose.yaml"
+      service: besu
+
+  node3:
+    extends:
+      file: "./blockchain/besu/node3/docker-compose.yaml"
+      service: besu
+
+  node4:
+    extends:
+      file: "./blockchain/besu/node4/docker-compose.yaml"
+      service: besu
+networks:
+  customnetwork:
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
