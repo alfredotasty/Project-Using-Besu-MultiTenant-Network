@@ -7,7 +7,7 @@ services:
       - '8548:8545'
     environment:
       - BESU_RPC_HTTP_ENABLED=true
-    container_name: "node4"
+    container_name: "besu-node4"
     volumes:
       - .:/usr/app/
     command: --config-file=/usr/app/option.toml
@@ -16,8 +16,3 @@ services:
         ipv4_address: 172.21.0.13
 volumes:
   .:
-networks:
-  customnetwork:
-    ipam:
-      config:
-        - subnet: 172.21.0.0/16

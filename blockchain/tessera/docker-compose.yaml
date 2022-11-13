@@ -1,0 +1,11 @@
+version: '3'
+services:
+  node:
+    image: quorumengineering/tessera:latest
+    container_name: "tessera-generator"
+    volumes:
+    - .:/Documents/Project-Using-Besu-MultiTenant-Network 
+    command: tessera keygen --keyout /Documents/Project-Using-Besu-MultiTenant-Network/blockchain/tessera/generator/node4/nodeKey
+    # chang node folder when you need to generate new key in new diretory
+volumes:
+  .:

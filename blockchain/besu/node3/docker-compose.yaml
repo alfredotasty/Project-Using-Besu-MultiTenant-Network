@@ -7,7 +7,7 @@ services:
       - '8547:8545'
     environment:
       - BESU_RPC_HTTP_ENABLED=true
-    container_name: "node3"
+    container_name: "besu-node3"
     volumes:
       - .:/usr/app/
     command: --config-file=/usr/app/option.toml

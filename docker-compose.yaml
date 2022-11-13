@@ -1,30 +1,50 @@
 version: "3"
 services:
-  node1:
-    extends:
-      file: "./blockchain/besu/node1/docker-compose.yaml"
-      service: besu
-  node2:
-    extends:
-      file: "./blockchain/besu/node2/docker-compose.yaml"
-      service: besu
+  # node1:
+  #   extends:
+  #     file: "./blockchain/besu/node1/docker-compose.yaml"
+  #     service: besu
+  # node2:
+  #   extends:
+  #     file: "./blockchain/besu/node2/docker-compose.yaml"
+  #     service: besu
 
-  node3:
-    extends:
-      file: "./blockchain/besu/node3/docker-compose.yaml"
-      service: besu
+  # node3:
+  #   extends:
+  #     file: "./blockchain/besu/node3/docker-compose.yaml"
+  #     service: besu
 
-  node4:
+  # node4:
+  #   extends:
+  #     file: "./blockchain/besu/node4/docker-compose.yaml"
+  #     service: besu
+  
+  tesseraNode1:
     extends:
-      file: "./blockchain/besu/node4/docker-compose.yaml"
-      service: besu
- 
-  exploere:
-    ports:
-      - '8080:80'
-    environment:
-      - 'APP_NODE_URL=http://localhost:8545'
-    image: alethio/ethereum-lite-explorer
+      file: "./blockchain/tessera/generator/node1/docker-compose.yaml"
+      service: tessera
+
+  tesseraNode2:
+    extends:
+      file: "./blockchain/tessera/generator/node2/docker-compose.yaml"
+      service: tessera
+
+  tesseraNode3:
+    extends:
+      file: "./blockchain/tessera/generator/node3/docker-compose.yaml"
+      service: tessera
+
+  # tesseraNode4:
+  #   extends:
+  #     file: "./blockchain/tessera/generator/node4/docker-compose.yaml"
+  #     service: tessera
+
+  # exploere:
+  #   ports:
+  #     - '25000:80'
+  #   environment:
+  #     - 'APP_NODE_URL=http://localhost:8545'
+  #   image: alethio/ethereum-lite-explorer
     
 networks:
   customnetwork:

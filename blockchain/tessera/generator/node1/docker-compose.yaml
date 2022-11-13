@@ -1,0 +1,15 @@
+version: '3'
+services:
+  tessera:
+    image: quorumengineering/tessera:latest
+    container_name: "tessera-node1"
+    volumes:
+    - .:/usr/app/
+    working_dir: /usr/app/
+    command:
+        --configfile tessera.conf
+    networks:
+      customnetwork:
+        ipv4_address: 172.21.0.14
+volumes:
+  .:

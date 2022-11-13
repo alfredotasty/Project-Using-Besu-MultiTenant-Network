@@ -5,6 +5,6 @@ services:
     container_name: "genesis-generator"
     volumes:
     - .:/Documents/Project-Using-Besu-MultiTenant-Network
-    command: operator generate-blockchain-config --config-file=/Documents/Project-Using-Besu-MultiTenant-Network/blockchain/ibftConfigFile.json --to=/Documents/Project-Using-Besu-MultiTenant-Network/blockchain/networkFiles --private-key-file-name=key
+    command: operator generate-blockchain-config --config-file=/Documents/Project-Using-Besu-MultiTenant-Network/blockchain/besu/generator/ibftConfigFile.json --to=/Documents/Project-Using-Besu-MultiTenant-Network/blockchain/networkFiles --private-key-file-name=key
 volumes:
-  .:
+  .: 

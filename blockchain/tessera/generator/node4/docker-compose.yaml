@@ -1,0 +1,10 @@
+version: '3'
+services:
+  tessera:
+    image: quorumengineering/tessera:latest
+    container_name: "tessera-node4"
+    volumes:
+    - .:/Documents/Project-Using-Besu-MultiTenant-Network/blockchain/tessera/generator/node4/
+    command: tessera -configfile /Documents/Project-Using-Besu-MultiTenant-Network/blockchain/tessera/generator/node4/tessera.conf
+volumes:
+  .:

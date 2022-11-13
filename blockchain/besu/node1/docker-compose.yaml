@@ -7,7 +7,7 @@ services:
     environment:
       - BESU_RPC_HTTP_ENABLED=true
     image: hyperledger/besu:latest
-    container_name: "node1"
+    container_name: "besu-node1"
     volumes:
       - .:/usr/app/
     command: --config-file=/usr/app/option.toml
