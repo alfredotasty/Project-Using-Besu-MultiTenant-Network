@@ -2,14 +2,15 @@ data-path = "/usr/app/data"
 
 genesis-file = "/usr/app/genesis.json"
 
-#rpc-http-authentication-enabled = true
+rpc-http-authentication-enabled = true
+
+rpc-http-authentication-credentials-file="/usr/app/auth.toml"
 
 #rpc-http-authentication-jwt-public-key-file= "publicKey.pem"
 
 rpc-http-enabled = true
 
 # rpc-http-port=8545
-
 
 rpc-http-api=["ETH","NET","IBFT","EEA","PRIV"]
 
@@ -19,10 +20,12 @@ rpc-http-cors-origins=["all"]
 
 p2p-port=30303
 
-#privacy-enabled = true
+privacy-enabled = true
 
 privacy-multi-tenancy-enabled = true
 
 min-gas-price=0
 
-#privacy-url="http://127.0.0.1:9102"
+privacy-url="http://172.21.0.14:9102"
+
+# --privacy-public-key-file="Tessera/nodeKey.pub"

@@ -34,7 +34,7 @@ const signup = async (req, res) => {
     const createInformationContract = (privacyGroupId) => {
       const contractOptions = {
         data: `0x${binary}`,
-        privateFrom: "VazacdLe/IK9Lpq7K7WkNR5Lhf6gnl23ESovCES/9gY=",
+        privateFrom: "UqjFQnta8bMFD/qlb6xIpaGTtMR5S8jtyWWl3KB4pQA=",
         privacyGroupId: privacyGroupId,
         privateKey: privateKey
     }
@@ -84,6 +84,7 @@ const signup = async (req, res) => {
 
   }catch (err) {
     console.error(err.message)
+    res.status(401).json({message: err})
   }
 
 }

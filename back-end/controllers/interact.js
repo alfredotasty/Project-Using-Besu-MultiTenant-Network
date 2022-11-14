@@ -2,15 +2,15 @@ const Web3 = require("web3")
 const Web3Quorum = require("web3js-quorum")
 const fs = require("fs")
 const path = require("path")
-const InformationAbi = require("../contract/information_abi.json")
+// const InformationAbi = require("../contract/information_sol_information.abi")
 const dotenv = require("dotenv")
 dotenv.config({path: '../.env'})
-
+const abi = JSON.parse(fs.readFileSync('./contract/information_sol_information.abi','utf-8'));
 
 const storeValue = async (req, res) => {
     try {
     const {enclave, privateKey, contracAdress,data} = req.body
-    const token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJwZXJtaXNzaW9ucyI6WyIqOioiXSwicHJpdmFjeVB1YmxpY0tleSI6ImtlaU5neHhFVmJXMWZ6cDBiOGFOajFuNUp4TituMVB3U29JVGlQcnVZaFU9IiwiZXhwIjoxNjAwODk5OTk5MDAyfQ.ecswcSuGAwsPnX9D0A9OBGXn6zJ91xwaCp44WNyMbwkvGONSu_R8-8W2vhMM6v0EW-rIaNDroimIHJ32wCTGdZlWN5XAOcbKUt54LhfMknaC1E1jz3KNISnZCUKOjl6UBgwSdnZPtTpNG4ByV3mNZv7KAtKOCsHNE3KuAmIG8uOTLfA175gxzJ0IatniNt5xKJbDZZmBomoxatmAG0ZK8vAkvBo9Ri3fSr3-2PnZ75oWMB2HMyq4IgWooj2Sji7uzoK7Aqq97p6UhFhbo5iCXOrw3R8g357XzrUUmts8FkSr3bqWGAyM_8jo1A0xzBwLdiG0THkQZ-ig2324sVCgCA"
+    const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJwZXJtaXNzaW9ucyI6WyIqOioiLCJldGg6YmxvY2tOdW1iZXIiXSwidXNlcm5hbWUiOiJ1c2VybmFtZTEiLCJwcml2YWN5UHVibGljS2V5IjoiVXFqRlFudGE4Yk1GRC9xbGI2eElwYUdUdE1SNVM4anR5V1dsM0tCNHBRQT0iLCJpYXQiOjE2Njg0NTIwNjYsImV4cCI6MTY2ODQ1MjM2Nn0.S7V5wR8SUpA4GOTdwHCt4OGQekiK9uMNx_mM1kutIbNPgp7InaHMK9-FwqtqdKF3e6Gmpv4M3k3W0_GF6_VrR1nV5QLsyKsES5hlCclXuWSD4DNo3TpHNH-vicuLzAipthOOFEjG1zH-3IQnQKlIsW3-o6YGxHDLtKRZieac5WeGKguCYHNzVFDy8fHgiMQi1X_QpyLyGFLEb3CGLCKbseX4I73xyoeaoQCD5T5xvKLExT1f4ZHQTyAHwE_nGfZjIvxpMJtnc6AaAppjFpJlwWUu1cqHntRdbwNkoIgZcLUt1EGHAAw9vAe6CodS9mkTaUUxIATFRF4WJa1HUQ3MpQ"
     const{createHttpProvider} = require('./helper')
     console.log('tessera =', enclave)
     console.log('contract adress =', data)
@@ -18,7 +18,10 @@ const storeValue = async (req, res) => {
     
     // const web3 = new Web3Quorum(new Web3("http://127.0.0.1:8545"))
     const web3 = new Web3Quorum(new Web3(createHttpProvider(token,"http://127.0.0.1:8545")))
-    const contract = new web3.eth.Contract(InformationAbi)
+
+    // const rawContract = fs.readFileSync('',"utf-8")
+    // const contractJSON = JSON.parse(rawContract)
+    const contract = new web3.eth.Contract(abi)
     
     //console.log(contract)
 
@@ -32,7 +35,7 @@ const storeValue = async (req, res) => {
     //console.log("abi json",inputContract)
 
 
-    const functionAgr = web3.eth.abi.encodeParameters(contractAbi.inputs, ['nammon']).slice(2) // "Nammon" is [value]
+    const functionAgr = web3.eth.abi.encodeParameter('string', 'nammon') // "Nammon" is [value]
 
     const decode = web3.eth.abi.decodeParameter('string', '000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000066e616d6d6f6e0000000000000000000000000000000000000000000000000000');
     console.log("message :",decode)
@@ -40,7 +43,6 @@ const storeValue = async (req, res) => {
     console.log("func arg : ",functionAgr)
     console.log("func arg signatur: ",contractAbi.signature)
     const byteData = contractAbi.signature + functionAgr
-    
     console.log("byte data: ",byteData)
 
     
@@ -48,8 +50,8 @@ const storeValue = async (req, res) => {
     const functionCall = {
         to: data,
         data: contractAbi.signature + functionAgr,
-        privateKeyFrom: "VazacdLe/IK9Lpq7K7WkNR5Lhf6gnl23ESovCES/9gY=", // enclave node 1
-        privateFor: ["keiNgxxEVbW1fzp0b8aNj1n5JxN+n1PwSoITiPruYhU="], 
+        privateKeyFrom: "UqjFQnta8bMFD/qlb6xIpaGTtMR5S8jtyWWl3KB4pQA=", // enclave node 1
+        privateFor: ["R4l0mId31cjRDZaULS+KW2B9p2TVfmBYMf4h2pTaizc="], 
         privateKey: "c87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3"
     }
     

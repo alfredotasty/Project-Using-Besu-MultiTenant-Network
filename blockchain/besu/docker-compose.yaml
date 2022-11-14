@@ -1,0 +1,10 @@
+version: '3'
+services:
+  node:
+    image: hyperledger/besu:latest
+    container_name: "genesis-generator"
+    volumes:
+    - .:/Documents/Project-Using-Besu-MultiTenant-Network
+    command: operator generate-blockchain-config --config-file=/Documents/Project-Using-Besu-MultiTenant-Network/blockchain/besu/generator/ibftConfigFile.json --to=/Documents/Project-Using-Besu-MultiTenant-Network/blockchain/Besu-validator --private-key-file-name=key
+volumes:
+  .: 

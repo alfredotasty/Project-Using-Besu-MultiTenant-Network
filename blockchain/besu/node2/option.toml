@@ -9,7 +9,9 @@ p2p-port=30304
 
 genesis-file = "/usr/app/genesis.json"
 
-#rpc-http-authentication-enabled = true
+rpc-http-authentication-enabled = true
+
+rpc-http-authentication-credentials-file="/usr/app/auth.toml"
 
 #rpc-http-authentication-jwt-public-key-file= "publicKey.pem"
 
@@ -21,10 +23,10 @@ host-allowlist=["*"]
 
 rpc-http-cors-origins=["all"]
 
-#privacy-enabled = true
+privacy-enabled = true
 
 privacy-multi-tenancy-enabled = true
 
 min-gas-price=0
 
-#privacy-url="http://127.0.0.1:9102"
+privacy-url="http://172.21.0.15:9202"

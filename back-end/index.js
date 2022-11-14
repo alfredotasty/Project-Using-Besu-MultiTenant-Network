@@ -21,6 +21,6 @@ app.get("/",(req, res) => {
 mongodb.connect("mongodb+srv://nammon:nammonmongo@cluster1.fikbndk.mongodb.net/?retryWrites=true&w=majority")
 .then(() => {
     app.listen(8081, () =>{
-        console.log("server start on port 8080");
+        console.log("server start on port 8081");
     })
 })

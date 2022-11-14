@@ -21,18 +21,33 @@ const UserContract = () => {
     const handleRequest = async () => {
     
         const{data: respond} = await axios.post('http://localhost:8081/users/signup', user)
-        console.log("raw res",respond)
-        
-        Swal.fire({
+
+        .then( respond => {
+
+            console.log("res from deploy",respond.data.message)
+            console.log("addr ",contract)
+            Swal.fire({
             icon: 'success',
-            title: "smart contract deploy success!!",   
-            text: respond.message,       
+            title: "delpoy Success!!",   
+            text: respond.data.message,     
             confirmButtonColor: "#000000",   
             confirmButtonText: "OK",   
-        })
     
+            })
+            return(respond)
+        
+        }).catch(err => {
+            if(err.name === 'AxiosError'){
+                Swal.fire({
+                    icon: 'error',
+                    title: "Error",  
+                    text:err.message,
+                    confirmButtonColor: "#000000",   
+                    confirmButtonText: "OK",   
+                })
+            }
+        })
         setContract(respond)
-
         return(contract)
     }
       

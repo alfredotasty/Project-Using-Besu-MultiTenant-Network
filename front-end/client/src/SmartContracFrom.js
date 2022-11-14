@@ -3,7 +3,7 @@ import Swal from 'sweetalert2'
 import axios from 'axios';
 const SmartContractFrom = (data) => {
  
-    console.log("samrt contract form",data)
+    console.log("prop form userCon",data)
     
     const handleRequest = async () => {
     
