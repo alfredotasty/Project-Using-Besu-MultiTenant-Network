@@ -2,71 +2,80 @@ const Web3 = require("web3")
 const Web3Quorum = require("web3js-quorum")
 const fs = require("fs")
 const path = require("path")
+const { createHttpProvider } = require('./helper');
 // const InformationAbi = require("../contract/information_sol_information.abi")
 const dotenv = require("dotenv")
 dotenv.config({path: '../.env'})
-const abi = JSON.parse(fs.readFileSync('./contract/information_sol_information.abi','utf-8'));
+const abi= JSON.parse(fs.readFileSync('./contract/information_sol_information.abi','utf-8'));
 
 const storeValue = async (req, res) => {
     try {
-    const {enclave, privateKey, contracAdress,data} = req.body
-    const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJwZXJtaXNzaW9ucyI6WyIqOioiLCJldGg6YmxvY2tOdW1iZXIiXSwidXNlcm5hbWUiOiJ1c2VybmFtZTEiLCJwcml2YWN5UHVibGljS2V5IjoiVXFqRlFudGE4Yk1GRC9xbGI2eElwYUdUdE1SNVM4anR5V1dsM0tCNHBRQT0iLCJpYXQiOjE2Njg0NTIwNjYsImV4cCI6MTY2ODQ1MjM2Nn0.S7V5wR8SUpA4GOTdwHCt4OGQekiK9uMNx_mM1kutIbNPgp7InaHMK9-FwqtqdKF3e6Gmpv4M3k3W0_GF6_VrR1nV5QLsyKsES5hlCclXuWSD4DNo3TpHNH-vicuLzAipthOOFEjG1zH-3IQnQKlIsW3-o6YGxHDLtKRZieac5WeGKguCYHNzVFDy8fHgiMQi1X_QpyLyGFLEb3CGLCKbseX4I73xyoeaoQCD5T5xvKLExT1f4ZHQTyAHwE_nGfZjIvxpMJtnc6AaAppjFpJlwWUu1cqHntRdbwNkoIgZcLUt1EGHAAw9vAe6CodS9mkTaUUxIATFRF4WJa1HUQ3MpQ"
-    const{createHttpProvider} = require('./helper')
-    console.log('tessera =', enclave)
-    console.log('contract adress =', data)
-    // res.status(200).json({message: data})
-    
-    // const web3 = new Web3Quorum(new Web3("http://127.0.0.1:8545"))
-    const web3 = new Web3Quorum(new Web3(createHttpProvider(token,"http://127.0.0.1:8545")))
+        const callGenericFunctionOnContract = async (
+            web3,
+            privateFrom,
+            privateKey,
+            address,
+            privacyGroupId,
+            method,
+            value
+          ) => {
+            const contract = new web3.eth.Contract(abi);
+          
+            const functionAbi = contract._jsonInterface.find((e) => {
+              return e.name === method;
+            });
+          
+            const functionArgs =
+              value !== null
+                ? web3.eth.abi.encodeParameters(functionAbi.inputs, [value]).slice(2)
+                : null;
+          
+            const functionCall = {
+              to: address,
+              data:
+                functionArgs !== null
+                  ? functionAbi.signature + functionArgs
+                  : functionAbi.signature,
+              privateFrom,
+              privateKey,
+              privacyGroupId,
+            };
+            return web3.priv
+              .generateAndSendRawTransaction(functionCall)
+              .then((privateTxHash) => {
+                //res.status(200).json({message:privateTxHash})
+                console.log('Transaction Hash:', privateTxHash);
+                return web3.priv.waitForTransactionReceipt(privateTxHash);
+              })
+              .then((result) => {
+                const blockDemical = parseInt(result.blockNumber,16)
+                res.status(200).json({message:blockDemical})
+                return console.log(result.blockDemical);
+              })
+              .catch((err) => {
+                  console.log(err.message)
+              })
+          };  
+          const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJwZXJtaXNzaW9ucyI6WyIqOioiLCJldGg6YmxvY2tOdW1iZXIiXSwidXNlcm5hbWUiOiJ1c2VybmFtZTEiLCJwcml2YWN5UHVibGljS2V5IjoiVXFqRlFudGE4Yk1GRC9xbGI2eElwYUdUdE1SNVM4anR5V1dsM0tCNHBRQT0iLCJpYXQiOjE2Njg0NjYyNzcsImV4cCI6MTY2ODQ2NjU3N30.V5i7IFV8pUZl8gCNwsc_h5nFCzgnDsNob6LJlq93z_jtVatH4K6SI_vv--CK8gkL1Nw8HmMXzFNiY9coxTjnQOQqUcqXuJ1F6Z_oTZcbRNlHbiO38D6bLBMvvGCaMeZQKN2J_E-FNahkCetY7boOi1WKcvZNcag8-Dg4gwxPA_44ttd_R02zu7khhVxtLfVH_-eTI8bT82vu4Li8ERxYTIINM8TySrrCIlKiogtxGA1hEviKaHvlLhH4H0UAf0Tp235ixfwDkyGMhJYWOlXDHojmzN1oOH7msFxSQw5bjEtz0DxYPm6QCZmTTjZmnI2PTIX7RNyvFlpcXRjFQrE66Q"
+          const node1 = new Web3Quorum(
+             
+            new Web3(createHttpProvider(token, "http://127.0.0.1:8545"))
+          );
+          const txAddress = '0x7b1f4478dc6176550c3a770f62256f90e3451231';
+          privacyGroupId = 'ntBayU2UDb/zCtLp1isGD1LZzTcIsAKs7OPGXmLLhEk=';
+          const callGreetFunctionResult = callGenericFunctionOnContract(
+            node1,
+            "UqjFQnta8bMFD/qlb6xIpaGTtMR5S8jtyWWl3KB4pQA=",
+            "c87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3",
+            txAddress,
+            privacyGroupId,
+            'setName',
+            'nammon'
+          ).then((r) => {
 
-    // const rawContract = fs.readFileSync('',"utf-8")
-    // const contractJSON = JSON.parse(rawContract)
-    const contract = new web3.eth.Contract(abi)
-    
-    //console.log(contract)
+            return r;
+          });
 
-
-    const contractAbi = contract._jsonInterface.find((e) => {
-        return e.name === "setName";
-    })
-    console.log("abi func instance: ",contractAbi)
-
-    //const inputContract = Buffer.from(JSON.stringify(contractAbi.inputs)) // fix problem recive undefine
-    //console.log("abi json",inputContract)
-
-
-    const functionAgr = web3.eth.abi.encodeParameter('string', 'nammon') // "Nammon" is [value]
-
-    const decode = web3.eth.abi.decodeParameter('string', '000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000066e616d6d6f6e0000000000000000000000000000000000000000000000000000');
-    console.log("message :",decode)
-
-    console.log("func arg : ",functionAgr)
-    console.log("func arg signatur: ",contractAbi.signature)
-    const byteData = contractAbi.signature + functionAgr
-    console.log("byte data: ",byteData)
-
-    
-
-    const functionCall = {
-        to: data,
-        data: contractAbi.signature + functionAgr,
-        privateKeyFrom: "UqjFQnta8bMFD/qlb6xIpaGTtMR5S8jtyWWl3KB4pQA=", // enclave node 1
-        privateFor: ["R4l0mId31cjRDZaULS+KW2B9p2TVfmBYMf4h2pTaizc="], 
-        privateKey: "c87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3"
-    }
-    
-    return await web3.priv
-        .generateAndSendRawTransaction(functionCall)
-        .then((transactionHash) => {
-            console.log("transaction Hash:", transactionHash)
-            return web3.priv.waitForTransactionReceipt(transactionHash)
-        })
-        .then((result) => {
-            console.log("set name in contract: ", result.log[0].data)
-       
-            return result
-            
-        })
     } catch(err) {
         console.error(err.message)
         if(err.name === 'Unauthorized'){
@@ -76,17 +85,10 @@ const storeValue = async (req, res) => {
             res.status(400).json({message: err})
         }
     }
-
-
     if (require.main === module) {
-        module.exports();
-      }
-    
-    
+       module.exports
+      }   
 }
-
-
-
 module.exports = {storeValue}
 
 // check point 

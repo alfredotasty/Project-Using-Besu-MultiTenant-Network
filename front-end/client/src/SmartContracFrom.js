@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import Swal from 'sweetalert2'
 import axios from 'axios';
+import TransactionHash from "./TransactionHash";
+import UserContract from "./UserContract";
 const SmartContractFrom = (data) => {
- 
+    const [tx, setTx] = useState(null)
     console.log("prop form userCon",data)
     
     const handleRequest = async () => {
@@ -18,6 +20,7 @@ const SmartContractFrom = (data) => {
                 confirmButtonColor: "#000000",   
                 confirmButtonText: "OK",   
                 })
+                return(respond)
          }).catch(err => {
             if(err.name === 'AxiosError'){
                 // console.log('Unauthorize')
@@ -30,6 +33,9 @@ const SmartContractFrom = (data) => {
                     })
             }
         })
+        setTx(respond)
+        console.log("tx res",tx)
+
     }
 
     const handleSubmit = (e) => {
@@ -37,7 +43,7 @@ const SmartContractFrom = (data) => {
       };
 
     return ( 
-        
+     <div>
         <div className='square'>
             
             <form className='smartcontract'>
@@ -75,6 +81,16 @@ const SmartContractFrom = (data) => {
                 </div>
             </form>
         </div>
+        {tx && <div className="squareButton">
+    
+            <div className="blueLinks">
+                <div className="smartcontract">
+                    <label>Block</label>
+                    <a href = {"http://localhost:8080/block/"+ tx.data.message} target="_blank" rel="noopener noreferrer">{tx.data.message}</a>
+                </div>
+            </div>
+        </div>}
+    </div>
      );
 }
  
